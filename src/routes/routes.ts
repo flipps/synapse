@@ -1,5 +1,5 @@
 import z from "zod";
-import { FastifyTypedInstance } from "./types";
+import { FastifyTypedInstance } from "../types";
 import { randomUUID } from "node:crypto";
 
 type User = {
@@ -8,11 +8,11 @@ type User = {
   email: string;
 };
 
-const users: User[] = [];
+const usersList: User[] = [];
 
-export async function routes(app: FastifyTypedInstance) {
+export async function users(app: FastifyTypedInstance) {
   app.get(
-    "/users",
+    "/",
     {
       schema: {
         description: "List users",
@@ -25,12 +25,12 @@ export async function routes(app: FastifyTypedInstance) {
       },
     },
     () => {
-      return users;
+      return usersList;
     }
   );
 
   app.post(
-    "/users",
+    "/",
     {
       schema: {
         description: "Create new user",
@@ -42,7 +42,7 @@ export async function routes(app: FastifyTypedInstance) {
     async (request, reply) => {
       const { name, email } = request.body;
 
-      users.push({
+      usersList.push({
         id: randomUUID(),
         name,
         email,
